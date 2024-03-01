@@ -1,9 +1,31 @@
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <Button className="x-10">Hello there</Button>
-    </main>
+    <>
+      <section className="bg-primary-50 bg-dotted-pattern bg-contain py-5">
+        <div className="wrapper grid grid-cols-1 gap-5 2xl:gap-0">
+          <div className="flex flex-col justify-center gap-8">
+            <h1 className="h1-bold">
+              Lets Party Hard: Your Bash, Our Platform!
+            </h1>
+            <p className="p-regular-20 ">
+              Book a slot in our premium locations and get services for all your
+              party needs wherever and whenever you need.
+            </p>
+            <Button size="lg" asChild className="button w-fit">
+              <Link href="#events">Book now</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+      <section id="events" className="wrapper my-8 flex flex-col">
+        <h2 className="h2-bold">
+          Trusted by <br /> Thousands of party animals.
+        </h2>
+        <div className="flex w-full flex-row gap-5">Search CategoryFilter</div>
+      </section>
+    </>
   );
 }
