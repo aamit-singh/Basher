@@ -16,12 +16,12 @@ export const headerLinks = [
 export const eventDefaultValues = {
   title: "",
   description: "",
-  location: "",
+  eventLocation: "",
   imageUrl: "",
   startDateTime: new Date(),
   endDateTime: new Date(),
   categoryId: "",
-  price: "",
+  price: 0,
   isFree: false,
   url: "",
 };
