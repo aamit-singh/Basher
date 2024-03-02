@@ -1,6 +1,7 @@
-import { Types } from "mongoose";
+import { QueryOptions, Types } from "mongoose";
 
 export interface IEvent extends Document {
+  _id: string;
   title: string;
   description: string;
   eventLocation: string;
@@ -11,6 +12,14 @@ export interface IEvent extends Document {
   url: string;
   category: string;
   organizer: Types.ObjectId;
+}
+
+export interface PopulatedEvent extends Omit<IEvent, "organizer"> {
+  organizer: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+  };
 }
 
 export type CreateEventParams = {
@@ -36,13 +45,23 @@ export type UpdateEventParams = {
     title: string;
     imageUrl: string;
     description: string;
-    location: string;
+    eventLocation: string;
     startDateTime: Date;
     endDateTime: Date;
-    categoryId: string;
-    price: string;
-    isFree: boolean;
+    category: string;
+    price: number;
     url: string;
   };
   path: string;
+};
+
+export type DeleteEventParams = {
+  eventId: string;
+  path: string;
+};
+
+export type GetAllEventParams = {
+  query: QueryOptions<IEvent>;
+  limit?: number;
+  skip?: number;
 };

@@ -1,7 +1,17 @@
 import { Button } from "@/components/ui/button";
+import { getAllEvents } from "@/lib/actions/event.actions";
+import { SearchParamProps } from "@/types";
+import Collection from "@/components/shared/Collection";
 import Link from "next/link";
 
-export default function Home() {
+export default async function Home({ searchParams }: SearchParamProps) {
+  const page = Number(searchParams?.page) || 1;
+
+  const events = await getAllEvents({
+    query: {},
+    limit: 6,
+    skip: (page - 1) * 6,
+  });
   return (
     <>
       <section className="bg-primary-50 bg-dotted-pattern bg-contain py-5">
@@ -24,7 +34,12 @@ export default function Home() {
         <h2 className="h2-bold">
           Trusted by <br /> Thousands of party animals.
         </h2>
-        <div className="flex w-full flex-row gap-5">Search CategoryFilter</div>
+        <div className="flex w-full flex-col gap-5 md:flex-row m-5"></div>
+        <Collection
+          data={events?.data || []}
+          emptyTitle="No Events Found"
+          emptyStateSubtext="Come back later"
+        />
       </section>
     </>
   );

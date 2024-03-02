@@ -22,20 +22,30 @@ import Image from "next/image";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useUploadThing } from "@/lib/uploadthing";
-import { createEvent } from "@/lib/actions/event.actions";
+import { createEvent, updateEvent } from "@/lib/actions/event.actions";
 import { useRouter } from "next/navigation";
+import { PopulatedEvent } from "@/types";
 
 type EventFormProps = {
   userId: string;
   type: "Create" | "Update";
+  event?: PopulatedEvent;
+  eventId?: string;
 };
 
-const EventForm = ({ userId, type }: EventFormProps) => {
+const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
   const [files, setFiles] = useState<File[]>([]);
   const { startUpload } = useUploadThing("imageUploader");
   const Router = useRouter();
 
-  const initialValues = eventDefaultValues;
+  const initialValues =
+    event && type === "Update"
+      ? {
+          ...event,
+          startDateTime: new Date(event.startDateTime),
+          endDateTime: new Date(event.endDateTime),
+        }
+      : eventDefaultValues;
 
   const form = useForm<z.infer<typeof EventFormSchema>>({
     resolver: zodResolver(EventFormSchema),
@@ -62,7 +72,28 @@ const EventForm = ({ userId, type }: EventFormProps) => {
 
         if (newEvent) {
           form.reset();
-          Router.push(`/event/${newEvent._id}`);
+          Router.push(`/events/${newEvent._id}`);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    if (type === "Update") {
+      if (!eventId) {
+        Router.back();
+        return;
+      }
+
+      try {
+        const updatedEvent = await updateEvent({
+          userId,
+          event: { ...values, imageUrl: eventData.imageUrl, _id: eventId },
+          path: `/events/${eventId}`,
+        });
+
+        if (updatedEvent) {
+          form.reset();
+          Router.push(`/events/${updatedEvent._id}`);
         }
       } catch (error) {
         console.log(error);
@@ -218,10 +249,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
                       </p>
                       <DatePicker
                         selected={field.value}
-                        onChange={(date: Date) => {
-                          console.log(date);
-                          field.onChange(date);
-                        }}
+                        onChange={(date: Date) => field.onChange(date)}
                         showTimeSelect
                         timeInputLabel="Time:"
                         dateFormat={"MMMM d, yyyy h:mm aa"}
@@ -251,7 +279,9 @@ const EventForm = ({ userId, type }: EventFormProps) => {
                         placeholder="Price"
                         {...field}
                         onChange={(e) =>
-                          field.onChange(parseInt(e.target.value))
+                          field.onChange(
+                            e.target.value ? parseInt(e.target.value) : ""
+                          )
                         }
                         className="input-field"
                       />

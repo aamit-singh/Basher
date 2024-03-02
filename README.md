@@ -1,3 +1,34 @@
+### Steps to run this app
+
+Simplest way to test this app is to go to the deployed version : [https://basher-sigma.vercel.app/]
+
+The other method is to setup all the integrations namely:
+
+- mongodb atlas cluster
+- uploadthing account
+- clerk authentication and webhook
+
+and then add all the following environment variables:
+
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+CLERK_SECRET_KEY
+
+UPLOADTHING_SECRET
+UPLOADTHING_APP_ID
+
+MONGODB_URI
+
+WEBHOOK_SECRET // for clerk
+
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/
+NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/
+
+# Note: Creation of event might take time initially due to free version of uploadthing service which results in slow execution. Also due to lack of time some functionalities introduced in the code are left incomplete.
+
+---
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started

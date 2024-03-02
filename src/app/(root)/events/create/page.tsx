@@ -1,8 +1,10 @@
 import EventForm from "@/components/shared/EventForm";
-import React from "react";
+import { auth } from "@clerk/nextjs";
 
 const CreateEvent = () => {
-  const userId = "test"; // remove this later and use the actual user id
+  const { sessionClaims } = auth();
+
+  const userId = sessionClaims?.userId as string;
   return (
     <>
       <section className="bg-primary-50 bg-dotted-pattern bg-cover bg-center py-10">
