@@ -15,5 +15,5 @@ export const EventFormSchema = z.object({
   endDateTime: z.date(),
   price: z.number().min(0, "Price must be at least 0"),
   url: z.string().url("Invalid URL"),
-  categoryId: z.string(),
+  category: z.string(),
 });

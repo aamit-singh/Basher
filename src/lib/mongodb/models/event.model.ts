@@ -1,17 +1,5 @@
-import { Schema, model, models, Types } from "mongoose";
-
-export interface IEvent extends Document {
-  title: string;
-  description: string;
-  eventLocation: string;
-  imageUrl: string;
-  startDateTime: Date;
-  endDateTime: Date;
-  price: number;
-  url: string;
-  category: { _id: Types.ObjectId; name: string };
-  organizer: { _id: Types.ObjectId; firstName: string; lastName: string };
-}
+import { IEvent } from "@/types/event.types";
+import { Schema, model, models } from "mongoose";
 
 const EventSchema = new Schema(
   {
@@ -23,7 +11,7 @@ const EventSchema = new Schema(
     endDateTime: { type: Date, required: true },
     price: { type: Number, required: true },
     url: { type: String },
-    category: { type: Schema.Types.ObjectId, ref: "Category" },
+    category: { type: String },
     organizer: { type: Schema.Types.ObjectId, ref: "User" },
   },
   {
